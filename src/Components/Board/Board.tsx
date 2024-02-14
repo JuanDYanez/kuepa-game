@@ -16,6 +16,7 @@ function Board(): JSX.Element {
         age: number,
         picture: string,
         color: string
+        [key: string]: string | number;
         }   
 
     const [randomData, setRandomData] = useState<Data>({
