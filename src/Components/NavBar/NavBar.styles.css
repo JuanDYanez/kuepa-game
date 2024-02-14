@@ -1,0 +1,25 @@
+.navBar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: right;
+    background-color: #FB5118;
+    width: 100vw;
+}
+
+.navBar-img {
+    width: 100px;
+    height: auto;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+.navBar-container p {
+    color: white;
+    text-align: right;
+    font-size: small;
+}
+
+.navBar-content {
+    margin: 0
+}

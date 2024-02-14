@@ -1,0 +1,28 @@
+{
+    "forenameAndNationality": [
+    {
+        "name": "Mariela",
+        "nationality": "Dominicana",
+        "picture": "pictures/girl1.svg"
+    },{
+        "name": "Juan Antonio",
+        "nationality": "Dominicano",
+        "picture": "pictures/boy1.svg"
+    },{
+        "name": "Manuela",
+        "nationality": "Dominicana",
+        "picture": "pictures/girl2.svg"
+    },{
+        "name": "Daniel",
+        "nationality": "Dominicano",
+        "picture": "pictures/boy2.svg"
+    },{
+        "name": "Alejandra",
+        "nationality": "Dominicana",
+        "picture": "pictures/girl3.svg"
+    }],
+    "surname": ["Mirabal", "Guzmán", "Duarte", "González", "Gómez"],
+    "age": [5, 6, 7, 9],
+    "color": ["#B288AA", "#72C674", "#FFD034", "#FF7C5B", "#009BCE"]
+  }
+
