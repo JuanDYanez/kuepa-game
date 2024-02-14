@@ -12,6 +12,7 @@ interface OptionsProps {
         age: number;
         picture: string;
         color: string;
+        [key: string]: string | number;
     },
     onRandomColor: () => string
 }
