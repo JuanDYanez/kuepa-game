@@ -12,9 +12,8 @@ interface OptionsProps {
         age: number;
         picture: string;
         color: string;
-        [key: string]: string | number;
     },
-    onRandomColor: () => string;
+    onRandomColor: (key: string) => string;
 }
 
 interface DraggableOptionProps {
@@ -53,17 +52,17 @@ function Options({data, onRandomColor}: OptionsProps): JSX.Element {
         { id: 'nationality', content: data.nationality },
     ]
 
-    const colors = {
-        age: onRandomColor(),
-        nationality: onRandomColor(),
-    };
+    // const colors = {
+    //     age: onRandomColor(),
+    //     nationality: onRandomColor(),
+    // };
 
     return (
         <div className="options-container">
             <h1 className='options-title'>Opciones</h1>
-                {options.map(option => (
-                    <DraggableOption key={option.id} option={option} onRandomColor={() => colors[option.id]}/>
-                ))}
+            {options.map(option => (
+                <DraggableOption key={option.id} option={option} onRandomColor={() => onRandomColor(option.id)}/>
+            ))}
         </div>
     )
 }
