@@ -14,7 +14,7 @@ interface OptionsProps {
         color: string;
         [key: string]: string | number;
     },
-    onRandomColor: () => string
+    onRandomColor: () => string;
 }
 
 interface DraggableOptionProps {
@@ -22,14 +22,15 @@ interface DraggableOptionProps {
     onRandomColor: () => string;
 }
 
-function DraggableOption({ option, onRandomColor }: DraggableOptionProps): JSX.Element {
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({
+const DraggableOption = ({ option, onRandomColor }: DraggableOptionProps): JSX.Element => {
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: option.id,
     });
 
+
     const draggableStyle = {
         transform: CSS.Translate.toString(transform),
-        backgroundColor: onRandomColor(),
+        backgroundColor: String(onRandomColor()),
     };
 
     return (
