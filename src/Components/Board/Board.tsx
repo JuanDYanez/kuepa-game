@@ -8,7 +8,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import {setInteractiveData, setLevel, updateInteractiveData} from '../../redux/actions'
+import {setInteractiveData, setLevel, updateInteractiveData} from 'redux/actions'
 import swal from 'sweetalert'
 
 import './Board.styles.css'

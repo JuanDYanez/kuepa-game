@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "baseUrl": "./src",
     "paths": {
-      "redux/actions": ["redux/actions.d.ts"]
+      "redux/actions": ["redux/actions.ts"],
     },
 
     /* Bundler mode */
