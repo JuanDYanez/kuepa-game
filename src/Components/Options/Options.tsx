@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
-
+import { useDrag } from 'react-dnd';
 import './Options.styles.css'
+import { useSelector } from 'react-redux';
 
 interface OptionsProps {
-    data: {
+    cardInfo: {
         forename: string;
         surname: string;
         nationality: string;
@@ -22,36 +21,36 @@ interface DraggableOptionProps {
 }
 
 const DraggableOption = ({ option, onRandomColor }: DraggableOptionProps): JSX.Element => {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
-        id: option.id,
-    });
-
+        
+    const {type, content} = option
+    
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'option',
+        item: {id: type},
+        collect: (monitor) => ({
+          isDragging: !!monitor.isDragging()
+        })
+      }))
 
     const draggableStyle = {
-        transform: CSS.Translate.toString(transform),
-        backgroundColor: String(onRandomColor()),
+        backgroundColor: onRandomColor(),
     };
 
     return (
         <div
-            ref={setNodeRef}
-            {...listeners}
-            {...attributes}
+            ref={drag}
             style={draggableStyle}
-            className="option"
+            className={isDragging ? "dragging-option" : "option"}
         >
             {option.content}
         </div>
     );
 }
 
-function Options({data, onRandomColor}: OptionsProps): JSX.Element {
+function Options({interactiveData, onRandomColor}: OptionsProps): JSX.Element {
     
-    const options = [
-        { id: 'age', content: data.age },
-        { id: 'nationality', content: data.nationality },
-    ]
-
+    const level = useSelector((state) => state.level)
+    
     // const colors = {
     //     age: onRandomColor(),
     //     nationality: onRandomColor(),
@@ -60,9 +59,12 @@ function Options({data, onRandomColor}: OptionsProps): JSX.Element {
     return (
         <div className="options-container">
             <h1 className='options-title'>Opciones</h1>
-            {options.map(option => (
-                <DraggableOption key={option.id} option={option} onRandomColor={() => onRandomColor(option.id)}/>
-            ))}
+            {(level === 1)
+            ? interactiveData.slice(0,2).map((option) => 
+                (<DraggableOption key={option.type} option={option} onRandomColor={onRandomColor}/>))
+            : interactiveData.map((option) => 
+                (<DraggableOption key={option.type} option={option} onRandomColor={onRandomColor}/>)
+            )}
         </div>
     )
 }

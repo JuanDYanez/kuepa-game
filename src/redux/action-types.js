@@ -1,5 +1,5 @@
-const GET_DRIVERS = 'GET_DRIVERS'
+const SET_LEVEL = 'SET_LEVEL'
 
 export {
-  GET_DRIVERS,
+  SET_LEVEL,
 }

@@ -3,17 +3,11 @@ import {useState, useEffect} from 'react'
 import Card from '../Card/Card'
 import Options from '../Options/Options'
 import data from '../../utils/data.json'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import {setLevel} from '../../redux/actions'
+import {DndContext } from '@dnd-kit/core'
 
 import './Board.styles.css'
 
 function Board(): JSX.Element {
-
-    const dispatch = useDispatch()
 
     interface Data {
         forename: string,
@@ -34,17 +28,9 @@ function Board(): JSX.Element {
         color: ''
     })
 
-    const level = useSelector((state) => state.level)
-    
     useEffect(() => {
         generateRandomOptions()
     }, [])
-
-    const handleSubmit = () => {
-        if (level === 1) {
-            dispatch(setLevel())
-        }
-    }
 
     const getRandomColor = (): string => {
         const indexColor = Math.floor(Math.random() * 1000) % data.color.length
@@ -67,26 +53,18 @@ function Board(): JSX.Element {
         })
     }
 
-    const interactiveData = [
-        { type: 'age', content: randomData.age },
-        { type: 'nationality', content: randomData.nationality },
-        { type: 'surname', content: randomData.surname },
-    ]
-    
+
     return (
-    <DndProvider backend={HTML5Backend}>
+    <DndContext>
         <div className="board-container">
-            {level === 1
-            ? <h1>Nivel 1</h1>
-            : <h1>Nivel 2</h1>
-            }
+            <h1>Nivel 1</h1>
             <div className='board-content'>
-                <Card cardInfo={randomData} level={level} interactiveData={interactiveData}/>
-                <Options cardInfo={randomData} onRandomColor={getRandomColor} level={level} interactiveData={interactiveData}/>
+                <Card data={randomData}/>
+                <Options data={randomData} onRandomColor={getRandomColor}/>
             </div>
-                <button className='content-button' onClick={handleSubmit}>Revisar respuestas</button>
+                <button className='content-button'>Siguiente</button>
         </div>
-    </DndProvider>
+    </DndContext>
     )
 }
 

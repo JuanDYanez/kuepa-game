@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useDroppable } from '@dnd-kit/core';
-
+import { useSelector } from 'react-redux';
 import './Card.styles.css'
+import { useDrop } from 'react-dnd';
 
 interface OptionsProps {
-    data: {
+    cardInfo: {
         forename: string;
         surname: string;
         nationality: string;
@@ -14,24 +14,38 @@ interface OptionsProps {
     }
 }
 
-function Card({data}: OptionsProps): JSX.Element {
+function Card({cardInfo, interactiveData}: OptionsProps): JSX.Element {
+        
+    const level = useSelector((state) => state.level)
 
-    const {setNodeRef: ageDroppable, isOver: isOverAge} = useDroppable({
-        id: 'ageDroppable',
-        data: {
-            type: 'ageDroppable'
-        }
-    })
-    const {setNodeRef: nationalityDroppable} = useDroppable({
-        id: 'nationalityDroppable',
-        data: {
-            type: 'nationalityDroppable'
-        }
-    })
-    
-    // 
+    const [{ isOver: isOverAge }, dropAge] = useDrop(() => ({
+        accept: 'option',
+        drop: (item) => addItemToSection(item.id, 'age'),
+        collect: (monitor) => ({
+          isOver: !!monitor.isOver()
+        })
+      }))
+
+      const [{ isOver: isOverNationality }, dropNationality] = useDrop(() => ({
+        accept: 'option',
+        drop: (item) => addItemToSection(item.id, 'nationality'),
+        collect: (monitor) => ({
+          isOver: !!monitor.isOver()
+        })
+      }))
+
+      const [{ isOver: isOverSurname }, dropSurname] = useDrop(() => ({
+        accept: 'option',
+        drop: (item) => addItemToSection(item.id, 'surname'),
+        collect: (monitor) => ({
+          isOver: !!monitor.isOver()
+        })
+      }))
     
 
+    const addItemToSection = (id, section) => {
+        console.log(`dropped ${id} to ${section}`);
+    }
 
     return (
         <div className="card-container">
@@ -41,17 +55,20 @@ function Card({data}: OptionsProps): JSX.Element {
             </div>
             <div className="content">
                 <div className="content-picture">
-                    <img src={data.picture} alt="Foto del titular"/>
+                    <img src={cardInfo.picture} alt="Foto del titular"/>
                 </div>
                 <div className="content-info">
                     <strong>Nombres:</strong>
-                    <div className='content-info-item'>{data.forename}</div>
+                    <div className='content-info-item'>{cardInfo.forename}</div>
                     <strong>Apellidos:</strong>
-                    <div className='content-info-item'>{data.surname}</div>
+                    {level === 1
+                        ? <div className='content-info-item'>{cardInfo.surname}</div>
+                        : <div ref={dropSurname} className={isOverSurname ? "content-info-item-blank-over" : "content-info-item-blank"}></div>
+                    }
                     <strong>Edad:</strong>
-                    <div ref={ageDroppable} className='content-info-item'>{isOverAge && data.age}</div>
+                    <div ref={dropAge} className={isOverAge ? "content-info-item-blank-over" : "content-info-item-blank"}></div>
                     <strong>Nacionalidad:</strong>
-                    <div ref={nationalityDroppable} className='content-info-item'>{data.nationality}</div>
+                    <div ref={dropNationality} className={isOverNationality ? "content-info-item-blank-over" : "content-info-item-blank"}></div>
                 </div>
             </div>
         </div>
