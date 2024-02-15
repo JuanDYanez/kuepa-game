@@ -7,7 +7,7 @@ interface DraggableOptionProps {
 
 const DraggableOption = ({ option, onRandomColor }: DraggableOptionProps): JSX.Element => {
         
-    const {type, content} = option
+    const {type} = option
     
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'option',

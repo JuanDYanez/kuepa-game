@@ -6,6 +6,10 @@
     "module": "ES2015",
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "baseUrl": "./src",
+    "paths": {
+      "redux/actions": ["redux/actions.d.ts"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

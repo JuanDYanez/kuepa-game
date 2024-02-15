@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import './Card.styles.css'
 import { useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import {updateInteractiveData, validateAnswers} from '../../redux/actions'
+import {updateInteractiveData} from '../../redux/actions'
 
 interface OptionsProps {
     cardInfo: {
@@ -19,7 +19,7 @@ interface DraggedItem {
     id: string;
 }
 
-function Card({cardInfo, onSubmitButton}: OptionsProps): JSX.Element {
+function Card({cardInfo}: OptionsProps): JSX.Element {
     
     const dispatch = useDispatch()
 
@@ -60,11 +60,11 @@ function Card({cardInfo, onSubmitButton}: OptionsProps): JSX.Element {
         
     }
 
-    const handleValidateAnswers = (type: string, section: string) => {
-        dispatch(validateAnswers(type, section))
-        onSubmitButton(type, section)
-        console.log(`dropped from ${type} to ${section}`);
-    }
+    // const handleValidateAnswers = (type: string, section: string) => {
+    //     dispatch(validateAnswers(type, section))
+    //     onSubmitButton(type, section)
+    //     console.log(`dropped from ${type} to ${section}`);
+    // }
 
 
     return (
