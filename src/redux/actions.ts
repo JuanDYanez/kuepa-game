@@ -6,3 +6,5 @@ declare module 'redux/actions' {
   export function updateInteractiveData(type: string): any;
 
 }
+
+export {}
