@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import './Card.styles.css'
 import { useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import {updateInteractiveData} from 'redux/actions'
+import {updateInteractiveData} from '../../redux/actions'
 
 interface OptionsProps {
     cardInfo: {
