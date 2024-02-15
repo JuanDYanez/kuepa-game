@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import {useState, useEffect} from 'react'
 import Card from '../Card/Card'
@@ -7,13 +8,17 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import {setLevel} from '../../redux/actions'
+import {setInteractiveData, setLevel, updateInteractiveData} from '../../redux/actions'
+import swal from 'sweetalert'
 
 import './Board.styles.css'
 
 function Board(): JSX.Element {
 
     const dispatch = useDispatch()
+
+    const level = useSelector((state: {level: number}) => state.level)
+    const interactiveDataCardInfo = useSelector((state: {interactiveData: {cardInfo: any[]}}) => state.interactiveData?.cardInfo || [])
 
     interface Data {
         forename: string,
@@ -34,18 +39,6 @@ function Board(): JSX.Element {
         color: ''
     })
 
-    const level = useSelector((state) => state.level)
-    
-    useEffect(() => {
-        generateRandomOptions()
-    }, [])
-
-    const handleSubmit = () => {
-        if (level === 1) {
-            dispatch(setLevel())
-        }
-    }
-
     const getRandomColor = (): string => {
         const indexColor = Math.floor(Math.random() * 1000) % data.color.length
         return data.color[indexColor]
@@ -57,6 +50,17 @@ function Board(): JSX.Element {
         const newIndexAge = Math.floor(Math.random() * data.age.length)
         const newIndexColor = Math.floor(Math.random() * data.color.length)
 
+        const dataArrays = {
+            cardInfo: [
+    
+            ],
+            options: [
+                { type: 'age', content: data.age[newIndexAge] },
+                { type: 'nationality', content: data.forenameAndNationality[newIndexNamePictureNationality].nationality },
+                { type: 'surname', content: data.surname[newIndexSurname] },
+            ]
+        }
+        
         setRandomData({
             forename: data.forenameAndNationality[newIndexNamePictureNationality].name,
             surname: data.surname[newIndexSurname],
@@ -65,14 +69,32 @@ function Board(): JSX.Element {
             age: data.age[newIndexAge],
             color: data.color[newIndexColor],
         })
+
+        dispatch(setInteractiveData(dataArrays))
     }
 
-    const interactiveData = [
-        { type: 'age', content: randomData.age },
-        { type: 'nationality', content: randomData.nationality },
-        { type: 'surname', content: randomData.surname },
-    ]
+    useEffect(() => {
+        generateRandomOptions();
+    }, []); 
     
+    const handleSubmit = (type: string, section: string) => {     
+        if (type === section) {
+            if (level === 1) {
+                console.log('Validate button');
+                
+                swal({
+                    title: "¡Bien hecho!",
+                    text: "Avanza al siguiente nivel",
+                    icon: "success",
+                  });
+            }   
+        }   
+        dispatch(updateInteractiveData(type))
+        console.log(`dropped from ${type} to ${section}`);
+        generateRandomOptions()
+        dispatch(setLevel())
+    }
+
     return (
     <DndProvider backend={HTML5Backend}>
         <div className="board-container">
@@ -81,10 +103,13 @@ function Board(): JSX.Element {
             : <h1>Nivel 2</h1>
             }
             <div className='board-content'>
-                <Card cardInfo={randomData} level={level} interactiveData={interactiveData}/>
-                <Options cardInfo={randomData} onRandomColor={getRandomColor} level={level} interactiveData={interactiveData}/>
+                <Card cardInfo={randomData} onSubmitButton={handleSubmit}/>
+                <Options randomOptions={generateRandomOptions} onSubmitButton={handleSubmit} onRandomColor={getRandomColor}/>
             </div>
-                <button className='content-button' onClick={handleSubmit}>Revisar respuestas</button>
+            {((level === 1 && interactiveDataCardInfo.length >= 2) || (level > 1 && interactiveDataCardInfo.length >= 3))
+            ? <button className='content-button' onClick={() => handleSubmit('type', 'section')}>Revisar respuestas</button>
+            : null
+            }
         </div>
     </DndProvider>
     )
